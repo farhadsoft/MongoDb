@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Options;
-using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace MongoDb;
@@ -29,5 +28,20 @@ public class MongoDBService
     public async Task CreateUser(User user)
     {
         await _collection.InsertOneAsync(user);
+        return;
+    }
+
+    public async Task UpdateUser(string id, User user)
+    {
+        var filter = Builders<User>.Filter.Eq("Id", id);
+        await _collection.ReplaceOneAsync(filter, user);
+        return;
+    }
+
+    public async Task DeleteUser(string id)
+    {
+        var filter = Builders<User>.Filter.Eq("Id", id);
+        await _collection.DeleteOneAsync(filter);
+        return;
     }
 }
