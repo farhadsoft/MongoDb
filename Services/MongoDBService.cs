@@ -34,7 +34,8 @@ public class MongoDBService
     public async Task UpdateUser(string id, User user)
     {
         var filter = Builders<User>.Filter.Eq("Id", id);
-        await _collection.ReplaceOneAsync(filter, user);
+        var update = Builders<User>.Update.Set("Name", user.Name).Set("Email", user.Email).Set("Password", user.Password);
+        await _collection.UpdateOneAsync(filter, update);
         return;
     }
 
