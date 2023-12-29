@@ -2,6 +2,7 @@
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.Configure<MongoDBSettings>(builder.Configuration.GetSection("MongoDb"));
+builder.Services.AddOutputCache();
 builder.Services.AddSingleton<MongoDBService>();
 
 builder.Services.AddEndpointsApiExplorer();
@@ -19,6 +20,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseOutputCache();
 
 app.UseExceptionHandler();
 

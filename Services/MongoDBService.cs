@@ -20,9 +20,9 @@ public class MongoDBService
         return await _collection.Find(filter).FirstOrDefaultAsync();
     }
 
-    public async Task<List<User>> GetUsers()
+    public async Task<List<User>> GetUsers(int page, int size)
     {
-        return await _collection.Find(_ => true).ToListAsync();
+        return await _collection.Find(_ => true).Skip((page - 1) * size).Limit(size).ToListAsync();
     }
 
     public async Task CreateUser(User user)

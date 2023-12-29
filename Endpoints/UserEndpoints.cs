@@ -8,10 +8,11 @@ public static class UserEndpoints
     {
         var user = app.MapGroup("/users");
 
-        user.MapGet("", (MongoDBService mongoDBService) =>
+        user.MapGet("", (MongoDBService mongoDBService, [FromQuery] int page = 1, [FromQuery] int size = 10) =>
         {
-            return mongoDBService.GetUsers();
+            return mongoDBService.GetUsers(page, size);
         })
+        .CacheOutput(c => c.Expire(TimeSpan.FromMinutes(1)))
         .WithName("getUsers")
         .WithOpenApi();
 
@@ -20,6 +21,7 @@ public static class UserEndpoints
             var user = await mongoDBService.GetUser(id);
             return user is not null ? Results.Ok(user) : Results.NotFound();
         })
+        .CacheOutput(c => c.Expire(TimeSpan.FromMinutes(1)))
         .WithName("getUser")
         .WithOpenApi();
 
