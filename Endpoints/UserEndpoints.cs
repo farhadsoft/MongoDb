@@ -14,6 +14,7 @@ public static class UserEndpoints
         })
         .CacheOutput(c => c.Expire(TimeSpan.FromMinutes(1)))
         .WithName("getUsers")
+        .WithTags("Get All Users")
         .WithOpenApi();
 
         user.MapGet("/{id}", async (MongoDBService mongoDBService, string id) =>
@@ -23,6 +24,7 @@ public static class UserEndpoints
         })
         .CacheOutput(c => c.Expire(TimeSpan.FromMinutes(1)))
         .WithName("getUser")
+        .WithTags("Get User By Id")
         .WithOpenApi();
 
         user.MapPost("", async (MongoDBService mongoDBService, [FromBody] User user) =>
@@ -31,6 +33,7 @@ public static class UserEndpoints
             return Results.Created($"/user/{user.Id}", user);
         })
         .WithName("createUser")
+        .WithTags("User Create")
         .WithOpenApi();
 
         user.MapPut("/{id}", async (MongoDBService mongoDBService, string id, [FromBody] User user) =>
@@ -39,6 +42,7 @@ public static class UserEndpoints
             return Results.Ok();
         })
         .WithName("updateUser")
+        .WithTags("User Update")
         .WithOpenApi();
 
         user.MapDelete("/{id}", async (MongoDBService mongoDBService, string id) =>
@@ -47,6 +51,7 @@ public static class UserEndpoints
             return Results.NoContent();
         })
         .WithName("deleteUser")
+        .WithTags("User Delete")
         .WithOpenApi();
     }
 }
